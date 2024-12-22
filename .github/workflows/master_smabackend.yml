@@ -46,9 +46,9 @@ jobs:
         ports:
           - 3306:3306
         env:
-          MYSQL_ROOT_PASSWORD: @Swasti123456
+          MYSQL_ROOT_PASSWORD: @Swasti123456  # Ensure this password is correct or use a secret for security
           MYSQL_DATABASE: school
-        options: --health-cmd="mysqladmin ping -h 127.0.0.1 --silent" --health-interval=10s --health-timeout=5s --health-retries=3
+        options: --health-cmd="mysqladmin ping -h mysql --silent" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Download artifact from build job
@@ -58,7 +58,7 @@ jobs:
 
       - name: Wait for MySQL to be ready
         run: |
-          until docker exec mysql mysqladmin -u root -proot ping --silent; do
+          until docker exec mysql mysqladmin -u root -p@Swasti123456 ping --silent; do  # Make sure the password is correctly handled
             echo "Waiting for MySQL to be ready..."
             sleep 5
           done
