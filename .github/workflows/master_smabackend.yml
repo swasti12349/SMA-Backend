@@ -46,8 +46,8 @@ jobs:
         ports:
           - 3306:3306
         env:
-          MYSQL_ROOT_PASSWORD: @Swasti123456  # Ensure this password is correct or use a secret for security
-          MYSQL_DATABASE: school
+          MYSQL_ROOT_PASSWORD: '@Swasti123456'
+          MYSQL_DATABASE: 'school'
         options: --health-cmd="mysqladmin ping -h mysql --silent" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
