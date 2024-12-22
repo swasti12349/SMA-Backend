@@ -38,14 +38,31 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
-  
+      id-token: write # This is required for requesting the JWT
+
+    services:
+      mysql:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: testdb
+        options: --health-cmd="mysqladmin ping -h 127.0.0.1 --silent" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: java-app
-      
+
+      - name: Wait for MySQL to be ready
+        run: |
+          until docker exec mysql mysqladmin -u root -proot ping --silent; do
+            echo "Waiting for MySQL to be ready..."
+            sleep 5
+          done
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -60,4 +77,3 @@ jobs:
           app-name: 'smabackend'
           slot-name: 'Production'
           package: '*.jar'
-          
