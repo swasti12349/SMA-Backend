@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -32,43 +32,26 @@ jobs:
           path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write # This is required for requesting the JWT
-
-    services:
-      mysql:
-        image: mysql:8.0
-        ports:
-          - 3306:3306
-        env:
-          MYSQL_ROOT_PASSWORD: '@Swasti123456'
-          MYSQL_DATABASE: 'school'
-        options: --health-cmd="mysqladmin ping -h mysql --silent" --health-interval=10s --health-timeout=5s --health-retries=3
+      id-token: write #This is required for requesting the JWT
 
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: java-app
-
-      - name: Wait for MySQL to be ready
-        run: |
-          until docker exec mysql mysqladmin -u root -p@Swasti123456 ping --silent; do  # Make sure the password is correctly handled
-            echo "Waiting for MySQL to be ready..."
-            sleep 5
-          done
-
+      
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_716E375332574749B1E5827D5444A976 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_36963E91F39546E2BE59575A5A9161FD }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E4BE32CC9689446CA8D856EA940F1928 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_2CAB7868D9ED455CA8E3F7847EA97A84 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_813DF045902F4188B1FE70390CD1C5A1 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1AE91AE2C9554028B4269797F71393DC }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -77,3 +60,4 @@ jobs:
           app-name: 'smabackend'
           slot-name: 'Production'
           package: '*.jar'
+          
