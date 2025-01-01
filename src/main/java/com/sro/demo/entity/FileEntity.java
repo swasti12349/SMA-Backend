@@ -4,7 +4,7 @@ package com.sro.demo.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "file")
+@Table(name = "[file]")
 public class FileEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
