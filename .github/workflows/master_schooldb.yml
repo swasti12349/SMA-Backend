@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy JAR app to Azure Web App - smabackend
+name: Build and deploy JAR app to Azure Web App - schooldb
 
 on:
   push:
@@ -49,15 +49,15 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_2CAB7868D9ED455CA8E3F7847EA97A84 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_813DF045902F4188B1FE70390CD1C5A1 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1AE91AE2C9554028B4269797F71393DC }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_8B11D1EFC81141DF9E456D1EFF52295A }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_7F462A2B4E134B1D967F754CDB3E66C9 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D67D36E290084DCF919083741F9CBECB }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'smabackend'
+          app-name: 'schooldb'
           slot-name: 'Production'
           package: '*.jar'
           
