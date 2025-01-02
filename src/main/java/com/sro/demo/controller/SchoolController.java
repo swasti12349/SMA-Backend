@@ -26,7 +26,7 @@ public class SchoolController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/")
     public String getData() {
         return "Hello World";
     }
